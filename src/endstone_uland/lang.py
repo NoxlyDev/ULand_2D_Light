@@ -149,6 +149,18 @@ def load_lang_data(lang_dir: str) -> dict:
                 'land_transfer_ownership_confirm.message.success': '转让所有权成功...',
                 'land_transfer_ownership_confirm.message': "{0} 已经将 领地({1}) 的所有权转让给你...",
 
+                'trust_command.message.fail': '信任玩家失败',
+                'trust_command.message.fail.reason.not_in_own_land': '你必须站在你自己的领地内才能使用该指令...',
+                'trust_command.message.fail.reason.self': '你不能信任你自己...',
+                'trust_command.message.fail.reason.unknown_player': '找不到该玩家, 该玩家可能从未加入过服务器...',
+                'trust_command.message.fail.reason.already_trusted': '该玩家已经是这块领地的成员了...',
+                'trust_command.message.success': '已成功将 {0} 添加为 领地({1}) 的成员...',
+
+                'untrust_command.message.fail': '取消信任玩家失败',
+                'untrust_command.message.fail.reason.not_in_own_land': '你必须站在你自己的领地内才能使用该指令...',
+                'untrust_command.message.fail.reason.not_a_member': '该玩家不是这块领地的成员...',
+                'untrust_command.message.success': '已成功将 {0} 从 领地({1}) 的成员中移除...',
+
                 'public_lands_form.title': "公开领地",
                 'public_lands_form.content': "请选择一个领地...",
 
@@ -336,6 +348,18 @@ def load_lang_data(lang_dir: str) -> dict:
                 'land_transfer_ownership_confirm_form.button.confirm': 'Confirm',
                 'land_transfer_ownership_confirm.message.success': 'Successfully transfer ownership...',
                 'land_transfer_ownership_confirm.message': "{0} has transferred the land({1})'s ownership to you...",
+
+                'trust_command.message.fail': 'Failed to trust the player',
+                'trust_command.message.fail.reason.not_in_own_land': 'you must be standing in your own land to use this command...',
+                'trust_command.message.fail.reason.self': 'you cannot trust yourself...',
+                'trust_command.message.fail.reason.unknown_player': 'that player could not be found, they may have never joined the server...',
+                'trust_command.message.fail.reason.already_trusted': 'that player is already a member of this land...',
+                'trust_command.message.success': 'Successfully added {0} as a member of the land({1})...',
+
+                'untrust_command.message.fail': 'Failed to untrust the player',
+                'untrust_command.message.fail.reason.not_in_own_land': 'you must be standing in your own land to use this command...',
+                'untrust_command.message.fail.reason.not_a_member': 'that player is not a member of this land...',
+                'untrust_command.message.success': 'Successfully removed {0} as a member of the land({1})...',
 
                 'public_lands_form.title': "Public lands",
                 'public_lands_form.content': "Please select a land...",

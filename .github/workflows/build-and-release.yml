@@ -1,0 +1,73 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v250827). Leave empty to auto-read version from pyproject.toml'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install build tool
+        run: python -m pip install --upgrade pip build
+
+      - name: Build wheel and sdist
+        run: python -m build
+
+      - name: Resolve release tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "tag_name=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "tag_name=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            version=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+            echo "tag_name=v$version" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create tag if it doesn't exist yet
+        run: |
+          git fetch --tags
+          if ! git rev-parse "${{ steps.tag.outputs.tag_name }}" >/dev/null 2>&1; then
+            git config user.name "GitHub Action"
+            git config user.email "action@github.com"
+            git tag "${{ steps.tag.outputs.tag_name }}"
+            git push origin "${{ steps.tag.outputs.tag_name }}"
+          fi
+
+      - name: Upload build artifacts (for debugging/inspection)
+        uses: actions/upload-artifact@v4
+        with:
+          name: uland-dist
+          path: dist/*
+
+      - name: Create GitHub Release and upload the .whl
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag_name }}
+          name: ${{ steps.tag.outputs.tag_name }}
+          generate_release_notes: true
+          files: |
+            dist/*.whl
+            dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

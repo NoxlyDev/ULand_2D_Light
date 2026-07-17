@@ -102,7 +102,7 @@ class uland(Plugin):
     commands = {
         'ul': {
             'description': 'Call out the main form of ULand',
-            'usages': ['/ul'],
+            'usages': ['/ul', '/ul trust <player: player>', '/ul untrust <player: player>'],
             'permissions': ['uland.command.ul']
         },
         'posa': {
@@ -114,6 +114,16 @@ class uland(Plugin):
             'description': 'Select point B',
             'usages': ['/posb'],
             'permissions': ['uland.command.posb']
+        },
+        'trust': {
+            'description': 'Trust a player in the land you are standing in',
+            'usages': ['/trust <player: player>'],
+            'permissions': ['uland.command.trust']
+        },
+        'untrust': {
+            'description': 'Untrust a player from the land you are standing in',
+            'usages': ['/untrust <player: player>'],
+            'permissions': ['uland.command.untrust']
         }
     }
 
@@ -129,10 +139,90 @@ class uland(Plugin):
         'uland.command.posb': {
             'description': 'Select point B',
             'default': True
+        },
+        'uland.command.trust': {
+            'description': 'Trust a player in the land you are standing in',
+            'default': True
+        },
+        'uland.command.untrust': {
+            'description': 'Untrust a player from the land you are standing in',
+            'default': True
         }
     }
 
     def on_command(self, sender: CommandSender, command: Command, args: list[str]):
+        if command.name == 'ul' and len(args) > 0 and args[0].lower() in ('trust', 'untrust'):
+            if not isinstance(sender, Player):
+                sender.send_message(
+                    f'{ColorFormat.RED}'
+                    f'This command can only be executed by a player...'
+                )
+
+                return
+
+            if len(args) < 2:
+                sender.send_message(
+                    f'{ColorFormat.RED}'
+                    f'{self.get_text(sender, "message.error")}: '
+                    f'{ColorFormat.WHITE}'
+                    f'/ul {args[0].lower()} <player>'
+                )
+
+                return
+
+            if args[0].lower() == 'trust':
+                self.trust_player(sender, args[1])
+            else:
+                self.untrust_player(sender, args[1])
+
+            return
+
+        if command.name == 'trust':
+            if not isinstance(sender, Player):
+                sender.send_message(
+                    f'{ColorFormat.RED}'
+                    f'This command can only be executed by a player...'
+                )
+
+                return
+
+            if len(args) < 1:
+                sender.send_message(
+                    f'{ColorFormat.RED}'
+                    f'{self.get_text(sender, "message.error")}: '
+                    f'{ColorFormat.WHITE}'
+                    f'/trust <player>'
+                )
+
+                return
+
+            self.trust_player(sender, args[0])
+
+            return
+
+        if command.name == 'untrust':
+            if not isinstance(sender, Player):
+                sender.send_message(
+                    f'{ColorFormat.RED}'
+                    f'This command can only be executed by a player...'
+                )
+
+                return
+
+            if len(args) < 1:
+                sender.send_message(
+                    f'{ColorFormat.RED}'
+                    f'{self.get_text(sender, "message.error")}: '
+                    f'{ColorFormat.WHITE}'
+                    f'/untrust <player>'
+                )
+
+                return
+
+            self.untrust_player(sender, args[0])
+
+            return
+
         if command.name == 'ul':
             if not isinstance(sender, Player):
                 sender.send_message(
@@ -1302,7 +1392,7 @@ class uland(Plugin):
 
     def land_transfer_ownership_confirm(self, land_hex_dig, land_name, player_name_to_transfer):
         def on_click(player: Player):
-            self.land_data[player_name_to_transfer][land_hex_dig] = self.land_data[player.name][land_hex_dig]
+            self.land_data[player_name_to_transfer][land_hex_dig] = self.land_data[player.name].pop(land_hex_dig)
 
             land_security_settings: dict = self.land_data[player_name_to_transfer][land_hex_dig]['security_settings']
 
@@ -2283,6 +2373,131 @@ class uland(Plugin):
                         command_line=f'execute in {execute_dim} run '
                                      f'kill @e[type=wither, x=0, y=-100, z=0, r=20]'
                     )
+
+    def find_own_land_at_position(self, player: Player):
+        player_dim = player.location.dimension.name
+
+        player_pos = [
+            math.floor(player.location.x),
+            math.floor(player.location.z)
+        ]
+
+        for land_hex_dig, land_info in self.land_data.get(player.name, {}).items():
+            if land_info['dim'] != player_dim:
+                continue
+
+            land_posa = land_info['posa']
+
+            land_posb = land_info['posb']
+
+            if (
+                min(land_posa[0], land_posb[0]) <= player_pos[0] <= max(land_posa[0], land_posb[0])
+                and
+                min(land_posa[1], land_posb[1]) <= player_pos[1] <= max(land_posa[1], land_posb[1])
+            ):
+                return land_hex_dig, land_info
+
+        return None, None
+
+    def trust_player(self, player: Player, target_name: str):
+        land_hex_dig, land_info = self.find_own_land_at_position(player)
+
+        if land_hex_dig is None:
+            player.send_message(
+                f'{ColorFormat.RED}'
+                f'{self.get_text(player, "trust_command.message.fail")}: '
+                f'{ColorFormat.WHITE}'
+                f'{self.get_text(player, "trust_command.message.fail.reason.not_in_own_land")}'
+            )
+
+            return
+
+        if target_name == player.name:
+            player.send_message(
+                f'{ColorFormat.RED}'
+                f'{self.get_text(player, "trust_command.message.fail")}: '
+                f'{ColorFormat.WHITE}'
+                f'{self.get_text(player, "trust_command.message.fail.reason.self")}'
+            )
+
+            return
+
+        if self.land_data.get(target_name) is None:
+            player.send_message(
+                f'{ColorFormat.RED}'
+                f'{self.get_text(player, "trust_command.message.fail")}: '
+                f'{ColorFormat.WHITE}'
+                f'{self.get_text(player, "trust_command.message.fail.reason.unknown_player")}'
+            )
+
+            return
+
+        if target_name in land_info['members']:
+            player.send_message(
+                f'{ColorFormat.RED}'
+                f'{self.get_text(player, "trust_command.message.fail")}: '
+                f'{ColorFormat.WHITE}'
+                f'{self.get_text(player, "trust_command.message.fail.reason.already_trusted")}'
+            )
+
+            return
+
+        self.land_data[player.name][land_hex_dig]['members'].append(target_name)
+
+        self.save_land_data()
+
+        player.send_message(
+            f'{ColorFormat.YELLOW}'
+            f'{self.get_text(player, "trust_command.message.success").format(target_name, land_info["name"])}'
+        )
+
+        target_player = self.server.get_player(target_name)
+
+        if target_player is not None:
+            target_player.send_message(
+                f'{ColorFormat.YELLOW}'
+                f'{self.get_text(target_player, "land_add_member.message").format(player.name, land_info["name"])}'
+            )
+
+    def untrust_player(self, player: Player, target_name: str):
+        land_hex_dig, land_info = self.find_own_land_at_position(player)
+
+        if land_hex_dig is None:
+            player.send_message(
+                f'{ColorFormat.RED}'
+                f'{self.get_text(player, "untrust_command.message.fail")}: '
+                f'{ColorFormat.WHITE}'
+                f'{self.get_text(player, "untrust_command.message.fail.reason.not_in_own_land")}'
+            )
+
+            return
+
+        if target_name not in land_info['members']:
+            player.send_message(
+                f'{ColorFormat.RED}'
+                f'{self.get_text(player, "untrust_command.message.fail")}: '
+                f'{ColorFormat.WHITE}'
+                f'{self.get_text(player, "untrust_command.message.fail.reason.not_a_member")}'
+            )
+
+            return
+
+        self.land_data[player.name][land_hex_dig]['members'].remove(target_name)
+
+        self.save_land_data()
+
+        player.send_message(
+            f'{ColorFormat.YELLOW}'
+            f'{self.get_text(player, "untrust_command.message.success").format(target_name, land_info["name"])}'
+        )
+
+        target_player = self.server.get_player(target_name)
+
+        if target_player is not None:
+            target_player.send_message(
+                f'{ColorFormat.YELLOW}'
+                f'{self.get_text(target_player, "land_remove_member.message").format(player.name, land_info["name"])}'
+            )
 
     def check(self, check_dim: str, check_pos: list, player_name: str, check_type: str):
         for land_owner, lands in self.land_data.items():
