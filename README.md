@@ -5,6 +5,15 @@
 ![Total Git clones](https://img.shields.io/badge/dynamic/json?label=Total%20Git%20clones&query=$&url=https://cdn.jsdelivr.net/gh/umarurize/ULand_2D_Light@master/clone_count.txt&color=brightgreen)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/umarurize/ULand_2D_Light/total)
 
+### :fork_and_knife:Fork Notice
+This is a fork of [ULand 2D Light](https://github.com/umarurize/ULand_2D_Light) by umarurize. All credit for the original plugin goes to the original author; this fork exists to continue development and add fixes/features on top of it.
+
+**Changes in this fork:**
+- Fixed the transfer ownership bug where the land wasn't removed from the previous owner (causing duplicate ownership)
+- Added `/trust <player>` and `/untrust <player>` commands to add/remove land members without opening the GUI
+- Added `/ul trust <player>` and `/ul untrust <player>` aliases
+- Added a CI workflow for automated build & release
+
 ### :bell:Introductions
 <details>
 <summary>Rich features</summary>
@@ -15,7 +24,7 @@
 - [x] Sell a land
 - [x] Teleport to a land
 - [x] Transfer ownership of a land
-- [x] Add/remove a member for a land
+- [x] Add/remove a member for a land (also via `/trust` and `/untrust` commands)
 - [x] Update teleport point for a land
 - [x] Edit/update security settings for a land
 - [x] Public lands
@@ -69,7 +78,7 @@
 Put `.whl` file into the endstone plugins folder, and then start the server. Enter the command `/ul` to call out the main form.
 
 ### :computer:Download
-Now, you can get the release version form this repo or <code><a href="https://www.minebbs.com/resources/uland-2d-light-gui.9967/"><img height="20" src="https://github.com/umarurize/umaru-cdn/blob/main/images/minebbs.png" alt="Minebbs" /></a>&nbsp;Minebbs</code>.
+You can get the release version from the [Releases](../../releases) page of this repo.
 
 ### :file_folder:File structure
 ```
