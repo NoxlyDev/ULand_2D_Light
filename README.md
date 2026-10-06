@@ -2,8 +2,8 @@
 
 <code><a href="https://github.com/umarurize/ULand_2D_Light"><img height="25" src="https://github.com/umarurize/ULand_2D_Light/blob/master/logo/ULand.png" alt="ULand 2D Light" /></a>&nbsp;ULand 2D Light</code>
 
-![Total Git clones](https://img.shields.io/badge/dynamic/json?label=Total%20Git%20clones&query=$&url=https://cdn.jsdelivr.net/gh/NoxlyDev/ULand_2D_Light/@master/clone_count.txt&color=brightgreen)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/NoxlyDev/ULand_2D_Light//total)
+![Total Git clones](https://img.shields.io/badge/dynamic/json?label=Total%20Git%20clones&query=$&url=https://raw.githubusercontent.com/NoxlyDev/ULand_2D_Light/master/clone_count.txt&color=brightgreen)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/NoxlyDev/ULand_2D_Light/total)
 
 ### :fork_and_knife:Fork Notice
 This is a fork of [ULand 2D Light](https://github.com/umarurize/ULand_2D_Light) by umarurize. All credit for the original plugin goes to the original author; this fork exists to continue development and add fixes/features on top of it.
@@ -17,7 +17,7 @@ This is a fork of [ULand 2D Light](https://github.com/umarurize/ULand_2D_Light) 
 ### :bell:Introductions
 <details>
 <summary>Rich features</summary>
-    
+
 - [x] Claim a land
 - [x] Query a land
 - [x] Rename a land
@@ -28,13 +28,13 @@ This is a fork of [ULand 2D Light](https://github.com/umarurize/ULand_2D_Light) 
 - [x] Update teleport point for a land
 - [x] Edit/update security settings for a land
 - [x] Public lands
-- [x] Manage a land (Operatores)
+- [x] Manage a land (Operators)
 
 </details>
 
 <details>
 <summary>Ultra protection</summary>
-    
+
 - [x] Make the land public
 - [x] Can thunder spawn in the land?
 - [x] Can explosions spawn in the land?
@@ -47,23 +47,23 @@ This is a fork of [ULand 2D Light](https://github.com/umarurize/ULand_2D_Light) 
 - [x] Can fire damage players or entities in the land?
 - [x] Can poison effect be applied to players or entities in the land?
 - [x] Can wither effect be applied to players or entities in the land?
-- [x] Can wither enter the land? 
+- [x] Can wither enter the land?
 
 </details>
 
 * **Full GUI support**
-* **Hot reload support:**
+* **Hot reload support**
 * **Localized languages support**
 
 ### :hammer:Installation
 <details>
 <summary>Check your Endstone's version</summary>
-    
+
 *  **Endstone 0.10.0+**
    *   250827
 *  **Endstone 0.6.0 - Endstone 0.9.4**
     *  250406
-    *  250221 
+    *  250221
 *  **Endstone 0.5.6 - Endstone 0.5.7.1**
     *  250127
     *  250113
@@ -75,7 +75,7 @@ This is a fork of [ULand 2D Light](https://github.com/umarurize/ULand_2D_Light) 
 
 [Optional pre-plugin] ZX_UI
 
-Put `.whl` file into the endstone plugins folder, and then start the server. Enter the command `/ul` to call out the main form.
+Put the `.whl` file into the Endstone plugins folder, and then start the server. Enter the command `/ul` to call out the main form.
 
 ### :computer:Download
 You can get the release version from the [Releases](../../releases) page of this repo.
@@ -147,6 +147,8 @@ ULand allows operators or players to edit/update relevant settings through GUI f
                 "can_wither_effect_applied_to_player_or_entity": false,
                 "can_wither_enter_land": false
             }
+        }
+    }
 }
 ```
 
@@ -154,20 +156,18 @@ ULand allows operators or players to edit/update relevant settings through GUI f
 - [x] `zh_CN`
 - [x] `en_US`
 
-Off course you can add your mother language to ULand, just creat `XX_XX.json` (such as `ja_JP.json`) and translate value with reference to `en_US.json`.
+Of course you can add your mother language to ULand, just create `XX_XX.json` (such as `ja_JP.json`) and translate the values with reference to `en_US.json`.
 
-You can also creat a PR to this repo to make your mother language one of the official languages of ULand.
+You can also create a PR to this repo to make your mother language one of the official languages of ULand.
 
 ### :camera:Screenshots
-You can view related screenshots of ULand from images folder of this repo.
+You can view related screenshots of ULand from the images folder of this repo.
 
 ### :fire:Operation document
-you can go to the operation document folder of this repo to learn how to use ULand.
+You can go to the operation document folder of this repo to learn how to use ULand.
 
 <div style="width: 100%; text-align: center;">
   <img src="https://github.com/umarurize/ULand_2D_Light/blob/master/logo/ULand2.png" style="max-width: 100%; height: auto;">
 </div>
 
 ![](https://img.shields.io/badge/language-python-blue.svg) [![GitHub License](https://img.shields.io/github/license/umarurize/UTP)](LICENSE)
-
-
