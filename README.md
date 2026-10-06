@@ -2,8 +2,8 @@
 
 <code><a href="https://github.com/umarurize/ULand_2D_Light"><img height="25" src="https://github.com/umarurize/ULand_2D_Light/blob/master/logo/ULand.png" alt="ULand 2D Light" /></a>&nbsp;ULand 2D Light</code>
 
-![Total Git clones](https://img.shields.io/badge/dynamic/json?label=Total%20Git%20clones&query=$&url=https://cdn.jsdelivr.net/gh/umarurize/ULand_2D_Light@master/clone_count.txt&color=brightgreen)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/umarurize/ULand_2D_Light/total)
+![Total Git clones](https://img.shields.io/badge/dynamic/json?label=Total%20Git%20clones&query=$&url=https://cdn.jsdelivr.net/gh/NoxlyDev/ULand_2D_Light/@master/clone_count.txt&color=brightgreen)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/NoxlyDev/ULand_2D_Light//total)
 
 ### :fork_and_knife:Fork Notice
 This is a fork of [ULand 2D Light](https://github.com/umarurize/ULand_2D_Light) by umarurize. All credit for the original plugin goes to the original author; this fork exists to continue development and add fixes/features on top of it.
